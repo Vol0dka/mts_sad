@@ -31,7 +31,7 @@ class BooksSpider(scrapy.Spider):
         else:
             print("[DEBUG] No more pages")
 
-    #
+    #Иформация о фильме
     def filmInfo(self, response):
         genre = None
         year = None
@@ -87,13 +87,12 @@ class BooksSpider(scrapy.Spider):
 
 
 def text(tr):
-    # print("text", datetime.now())
     td_elements = tr.xpath('.//td//*[not(self::br)][text()]')
 
-    # Извлекаем текст из каждого элемента (игнорируя <br>)
+    # Извлекаем текст
     texts = [el.xpath('normalize-space(.)').get() for el in td_elements]
 
-    # Фильтруем пустые значения
+    # Фильтруем значения
     result = [text for text in texts if text]
     result = [text for text in result if "[" not in text]
     result = [text for text in result if "]" not in text]
@@ -101,7 +100,7 @@ def text(tr):
     result = [text for text in result if "\xa0" not in text]
 
     return result
-
+#Проверка значения на то, что это год
 def is_year(text):
     return bool(re.match(r"^\d{4}$", text.strip()))
 
